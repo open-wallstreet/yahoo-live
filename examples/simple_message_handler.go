@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"time"
 
-	"github.com/open-wallstreet/yahoo-live/internal/yahoo"
-	"github.com/open-wallstreet/yahoo-live/proto"
+	"github.com/open-wallstreet/yahoo-live/pkg/yahoo"
+	"github.com/open-wallstreet/yahoo-live/pkg/yahoo/proto"
 	"go.uber.org/zap"
 )
 
@@ -21,10 +23,16 @@ func createLogger() *zap.SugaredLogger {
 }
 
 func on_msg(message *proto.Yaticker) {
-	println(message.String())
+	println(fmt.Sprintf("%s: %s", time.Unix(message.Time/1000, 0).String(), message.String()))
 }
 
 func main() {
 	logger := createLogger()
-	yahoo.NewYahooWebsocket(logger, []string{"AMZN", "AAPL", "TSLA", "A", "AA"}, on_msg)
+	con, err := yahoo.NewWebsocket(logger, []string{"KIND-SDB.ST"})
+	if err != nil {
+		panic(err)
+	}
+	con.AddMessageHandler(on_msg)
+
+	con.Wait()
 }

@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/cmd/yahoo-live/main.go"
+      "program": "${workspaceFolder}/examples/simple_message_handler.go"
     }
   ]
 }
