@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/gorilla/websocket"
+	"github.com/fasthttp/websocket"
 	yaproto "github.com/open-wallstreet/yahoo-live/pkg/yahoo/proto"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/proto"
