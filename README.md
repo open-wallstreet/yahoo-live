@@ -20,19 +20,20 @@ import (
 	"time"
 
 	"github.com/open-wallstreet/yahoo-live/pkg/yahoo"
-	"github.com/open-wallstreet/yahoo-live/proto"
+	"github.com/open-wallstreet/yahoo-live/pkg/yahoo/proto"
 	"go.uber.org/zap"
 )
 
 func main() {
-	logger, _ = zap.NewDevelopment()
-    con, err := yahoo.NewWebsocket(logger.Sugar(), []string{"KIND-SDB.ST"})
+	logger, _ := zap.NewDevelopment()
+    	con, err := yahoo.NewWebsocket(logger.Sugar(), []string{"AAPL", "KIND-SDB.ST"})
 	if err != nil {
 		panic(err)
 	}
 	con.AddMessageHandler(on_msg)
 	con.Wait()
 }
+
 func on_msg(message *proto.Yaticker) {
 	println(fmt.Sprintf("%s: %s", time.Unix(message.Time/1000, 0).String(), message.String()))
 }
