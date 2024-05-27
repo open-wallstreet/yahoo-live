@@ -126,6 +126,23 @@ func NewWebsocket(logger *zap.SugaredLogger, tickers []string) (*SocketConnectio
 	return socketConnection, nil
 }
 
+
+func (s *SocketConnection) AddSubscription(tickers []string) {
+    msg := Subscription{
+        Subscribe: tickers,
+    }
+    b, err := json.Marshal(msg)
+    if err != nil {
+        s.logger.Errorf("Failed to Marshal Subscription Message", err)
+    }
+
+    err = s.connection.WriteMessage(websocket.TextMessage, b)
+
+    if err != nil  {
+        s.logger.Errorf("Failed to send subscription ", err)
+    }
+}
+
 func Base64Decode(str []byte) ([]byte, error) {
 	return base64.StdEncoding.DecodeString(string(str))
 }
